@@ -1,1 +1,1 @@
-demo
+webpack + react + redux + rerver Rending + hot load
