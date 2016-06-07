@@ -1,0 +1,1 @@
+var LOGIN_CONFIG = {"WEIBO_APP_KEY":"169396320","WEIBO_LOGIN_CB":"http:\/\/idesign.qq.com\/login\/Check\/type\/weibo","WX_APP_KEY":"wx0b6d5274c0ecd4ab","WX_LOGIN_CB":"http:\/\/idesign.qq.com\/login\/Check\/type\/wx","PTLOGIN_APPID":1600000136,"PTLOGIN_DAID":333}

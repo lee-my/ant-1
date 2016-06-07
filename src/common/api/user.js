@@ -9,7 +9,7 @@ export function getUser(callback) {
       email : 'john@smith.com',
       id : 'abcde1234' 
     });
-  }, 500);
+  }, 5000);
 
   // In the case of a real world API call, you'll normally run into a Promise like this:
   // API.getUser().then(user => callback(user));
