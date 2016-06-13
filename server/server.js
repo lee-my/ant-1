@@ -41,6 +41,7 @@ function handleRender(req, res) {
     // Create a new Redux store instance
     const store = configureStore(preloadedState)
 
+
     // Render the component to a string
     const html = renderToString(
       <Provider store={store}>
