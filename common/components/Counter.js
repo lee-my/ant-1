@@ -5,7 +5,7 @@ class Counter extends Component {
     const { increment, incrementIfOdd, incrementAsync, decrement, counter } = this.props
     return (
       <p>
-        w3casasasdas Clicked: {counter} times
+        w3sdas Clicked: {counter} times
         {' '}
         <button onClick={increment}>+</button>
         {' '}
