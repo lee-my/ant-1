@@ -26,7 +26,8 @@ module.exports = {
         query: {
           presets: [ 'react-hmre' ]
         }
-      }
+      },
+      { test: /\.css$/, loader: "style!css" },
     ]
   }
 }
