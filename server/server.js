@@ -12,10 +12,14 @@ import webpackConfig from '../webpack.config'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import { RouterContext, match  } from 'react-router'
+import routes from '../common/routes'
+import { fetchComponentDataBeforeRender } from '../common/api/fetchComponentDataBeforeRender';
 
 import configureStore from '../common/store/configureStore'
 import App from '../common/containers/App'
 import { fetchCounter } from '../common/api/counter'
+
 
 const app = new Express()
 const port = 3000
@@ -25,44 +29,57 @@ const compiler = webpack(webpackConfig)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
-// This is fired every time the server side receives a request
-app.use(handleRender)
 
-function handleRender(req, res) {
+app.get('/*', function (req, res) {
+
   // Query our mock API asynchronously
   fetchCounter(apiResult => {
     // Read the counter from the request, if provided
     const params = qs.parse(req.query)
     const counter = parseInt(params.counter, 10) || apiResult || 0
 
-    // Compile an initial state
-    const preloadedState = { counter }
+    
 
-    // Create a new Redux store instance
-    const store = configureStore(preloadedState)
+    match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
 
+        if(err) {
+          console.error(err);
+          return res.status(500).end('Internal server error');
+        }
 
-    // Render the component to a string
-    const html = renderToString(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    )
+        if(!renderProps)
+          return res.status(404).end('Not found');
 
-    // Grab the initial state from our Redux store
-    const finalState = store.getState()
+        const store = configureStore({counter : counter});
 
-    // Send the rendered page back to the client
-    res.send(renderFullPage(html, finalState))
+        const InitialView = (
+          <Provider store={store}>
+              <RouterContext {...renderProps} />
+          </Provider>
+        );
+
+        //This method waits for all render component promises to resolve before returning to browser
+        fetchComponentDataBeforeRender(store.dispatch, renderProps.components, renderProps.params)
+          .then(html => {
+            const componentHTML = renderToString(InitialView);
+            const initialState = store.getState();
+            res.status(200).end(renderFullPage(componentHTML,initialState))
+          })
+          .catch(err => {
+            console.log(err)
+            res.end(renderFullPage("",{}))
+          });
+      });
   })
-}
+})
 
 function renderFullPage(html, preloadedState) {
   return `
     <!doctype html>
-    <html>
+    <html lang="zh-CN">
       <head>
-        <title>Redux Universal Example</title>
+        <meta charset="utf-8">
+        <title>我的博客</title>
       </head>
       <body>
         <div id="app">${html}</div>
