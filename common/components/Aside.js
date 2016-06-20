@@ -8,7 +8,7 @@ class Aside extends Component {
       	<div className="overlay"></div>
       	<div className="info">
       		<header>
-      			<a href=""><img src="" /></a>
+      			<a href="/"><img src="../resources/images/lee.jpg" /></a>
       			<h2>Groove明阳</h2>
       			<h6>床前明月光，疑是地上霜</h6>
       			<div className="Tab">
