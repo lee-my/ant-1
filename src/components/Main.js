@@ -3,10 +3,10 @@ require('styles/App.scss');
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, hashHistory, Link } from 'react-router'
+import { Router, Route, browserHistory, Link } from 'react-router'
 
 
-import Admin from './Admin'
+import Admin from '../containers/admin/test'
 
 // 获取图片相关的数据
 var imageDatas = require('../sources/imageDatas.json');
@@ -363,7 +363,7 @@ class AppComponent extends React.Component {
 class App extends React.Component {
   render() {
     return (
-      <Router history={hashHistory}>
+      <Router history={browserHistory}>
         <Route path="/" component={AppComponent} />
         <Route path="admin" component={Admin} />
       </Router>
